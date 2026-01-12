@@ -2,6 +2,7 @@ import uuid
 import enum
 from sqlalchemy import Column, String, Boolean, Enum
 from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy.orm import relationship
 
 from app.core.database import Base
 from app.models.base import TimestampMixin
@@ -24,3 +25,9 @@ class Task(Base, TimestampMixin):
     difficulty = Column(Enum(TaskDifficulty), nullable=False)
     category = Column(Enum(TaskCategory), nullable=False)
     is_completed = Column(Boolean, default=False)
+
+    focus_session = relationship(
+        "FocusSession",
+        back_populates = "task",
+        cascade = "all, delete-orphan"
+    )
