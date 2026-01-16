@@ -26,8 +26,9 @@ class Task(Base, TimestampMixin):
     category = Column(Enum(TaskCategory), nullable=False)
     is_completed = Column(Boolean, default=False)
 
-    focus_session = relationship(
-        "FocusSession",
-        back_populates = "task",
-        cascade = "all, delete-orphan"
-    )
+    focus_sessions= relationship(
+    "FocusSession",
+    back_populates="task",
+    cascade="all, delete-orphan"
+)
+
