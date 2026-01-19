@@ -3,6 +3,7 @@ import enum
 from sqlalchemy import Column, String, Boolean, Enum
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import relationship
+from sqlalchemy import Date
 
 from app.core.database import Base
 from app.models.base import TimestampMixin
@@ -22,6 +23,7 @@ class Task(Base, TimestampMixin):
 
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     title = Column(String, nullable=False)
+    task_date = Column(Date, nullable=False)
     difficulty = Column(Enum(TaskDifficulty), nullable=False)
     category = Column(Enum(TaskCategory), nullable=False)
     is_completed = Column(Boolean, default=False)

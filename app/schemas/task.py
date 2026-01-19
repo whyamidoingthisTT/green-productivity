@@ -1,6 +1,7 @@
 from pydantic import BaseModel
 from uuid import UUID
 from enum import Enum
+from datetime import date 
 
 class TaskDifficulty(str, Enum):
     easy = "easy"
@@ -16,6 +17,7 @@ class TaskCreate(BaseModel):
     title: str
     difficulty: TaskDifficulty
     category: TaskCategory
+    task_date: date
 
 class TaskUpdate(BaseModel):
     title: str | None = None
@@ -29,6 +31,7 @@ class TaskResponse(BaseModel):
     difficulty: TaskDifficulty
     category: TaskCategory
     is_completed: bool
+    task_date: date
 
     class Config:
         from_attributes = True

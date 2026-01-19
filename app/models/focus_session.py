@@ -2,6 +2,7 @@ import uuid
 from sqlalchemy import Column, DateTime, Integer, ForeignKey
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import relationship
+from sqlalchemy import Date
 
 from app.core.database import Base
 from app.models.base import TimestampMixin
@@ -17,6 +18,7 @@ class FocusSession(Base, TimestampMixin):
         nullable=True
     )
 
+    session_date = Column(Date, nullable=False)
     start_time = Column(DateTime, nullable=False)
     end_time = Column(DateTime, nullable=True)
     duration_minutes = Column(Integer, default=0)

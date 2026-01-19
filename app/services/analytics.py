@@ -1,9 +1,8 @@
 from sqlalchemy.orm import Session
-from sqlalchemy import func, case
+from sqlalchemy import func
 from datetime import date, timedelta
-from datetime import datetime, time
 
-from app.models.task import Task, TaskDifficulty
+from app.models.task import Task
 from app.models.focus_session import FocusSession
 from app.models.reflection import DailyReflection
 
@@ -13,10 +12,8 @@ DIFFICULTY_WEIGHTS = {
     "hard": 3,
 }
 def daily_completion_percentage(db: Session, target_date: date):
-    start = datetime.combine(target_date, time.min)
-    end = datetime.combine(target_date, time.max)
     total = db.query(Task).filter(
-        func.date(Task.created_at) == target_date,
+        Task.task_date == target_date,
         Task.is_deleted == False
     ).count()
 
@@ -24,19 +21,15 @@ def daily_completion_percentage(db: Session, target_date: date):
         return 0.0
 
     completed = db.query(Task).filter(
-        Task.created_at >= start,
-        Task.created_at <= end,
+        Task.task_date == target_date,
         Task.is_completed == True,
         Task.is_deleted == False
     ).count()
 
     return round((completed / total) * 100, 2)
 def weighted_productivity_score(db: Session, target_date: date):
-    start = datetime.combine(target_date, time.min)
-    end = datetime.combine(target_date, time.max)
     tasks = db.query(Task).filter(
-        Task.created_at >= start,
-        Task.created_at <= end,
+        Task.task_date == target_date,
         Task.is_deleted == False
     ).all()
 
@@ -48,7 +41,7 @@ def weighted_productivity_score(db: Session, target_date: date):
         return 0.0
     
     completed_weight = sum(
-        DIFFICULTY_WEIGHTS(t.difficulty,0)
+        DIFFICULTY_WEIGHTS.get(t.difficulty,0)
         for t in tasks if t.is_completed
     )
 
@@ -58,10 +51,11 @@ def focus_minutes_for_day(db: Session, target_date: date):
     minutes = db.query(
         func.coalesce(func.sum(FocusSession.duration_minutes), 0)
     ).filter(
-        func.date(FocusSession.start_time) == target_date
+        FocusSession.session_date == target_date
     ).scalar()
 
     return int(minutes)
+
 def weekly_productivity_trend(db: Session):
     today = date.today()
     data = []
