@@ -93,10 +93,10 @@ Once the application is running, you can access the interactive API documentatio
 
 ### Basic Workflow
 
-1. **Create Tasks**: Add tasks you want to accomplish
-2. **Log Focus Sessions**: Record when you're doing deep work
-3. **Add Daily Reflections**: End each day with a reflection on your productivity
-4. **View Analytics**: Check your dashboard for insights and burnout risk indicators
+1. **Tasks**: Add, update, delete tasks you want to accomplish
+2. **Focus Sessions**: Record when you're doing deep work (start/ end a focus session)
+3. **Daily Reflections**: End each day with a reflection on your productivity
+4. **Analytics**: Check your dashboard for insights and burnout risk indicators using daily summary, weekly trends, mood correlation.
 
 ## Database Migrations
 
@@ -117,30 +117,10 @@ alembic downgrade -1
 
 ## Scripts
 
-The `scripts/` directory contains utility scripts for various operations. Check individual script documentation for usage details.
-
-## Development
-
-### Setting up for development
-
-1. Install development dependencies (if separate):
-```bash
-   pip install -r requirements-dev.txt  # if exists
-```
-
-2. Run tests:
-```bash
-   pytest
-```
-
-3. Format code:
-```bash
-   black app/
-```
+The `scripts/` directory contains utility scripts for postgreSQL operations. Check script documentation for usage details.
 
 ## License
-
-This project is open source. Please check the repository for license details.
+MIT License
 
 ## Support
 
