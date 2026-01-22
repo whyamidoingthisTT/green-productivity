@@ -82,3 +82,39 @@ def mood_productivity_pairs(db: Session):
         })
 
     return result
+
+def explain_daily_productivity(db: Session, target_date: date):
+    tasks = db.query(Task).filter(
+        Task.task_date == target_date,
+        Task.is_deleted == False
+    ).all()
+
+    total_tasks = len(tasks)
+    completed_tasks = sum(1 for t in tasks if t.is_completed)
+
+    total_weight = sum(
+        DIFFICULTY_WEIGHTS.get(t.difficulty, 0) for t in tasks
+    )
+    completed_weight = sum(
+        DIFFICULTY_WEIGHTS.get(t.difficulty, 0)
+        for t in tasks if t.is_completed
+    )
+
+    focus_minutes = db.query(
+        func.coalesce(func.sum(FocusSession.duration_minutes), 0)
+    ).filter(
+        FocusSession.session_date == target_date
+    ).scalar()
+
+    return {
+        "date": target_date,
+        "tasks": {
+            "total": total_tasks,
+            "completed": completed_tasks,
+        },
+        "weights": {
+            "total": total_weight,
+            "completed": completed_weight
+        },
+        "focus_minutes": int(focus_minutes)
+    }

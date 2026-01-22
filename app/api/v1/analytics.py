@@ -8,10 +8,19 @@ from app.services.analytics import (
     weighted_productivity_score,
     focus_minutes_for_day,
     weekly_productivity_trend,
-    mood_productivity_pairs
+    mood_productivity_pairs,
+    explain_daily_productivity
 )
 
 router = APIRouter()
+
+@router.get("/daily-summary/explain")
+def explain_daily_summary(
+    target_date: date,
+    db: Session = Depends(get_db)
+):
+    return explain_daily_productivity(db, target_date)
+
 
 @router.get("/daily-summary")
 def daily_summary(target_date: date, db: Session = Depends(get_db)):
