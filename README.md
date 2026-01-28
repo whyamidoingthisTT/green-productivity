@@ -119,9 +119,6 @@ alembic downgrade -1
 
 The `scripts/` directory contains utility scripts for postgreSQL operations. Check script documentation for usage details.
 
-## License
-MIT License
-
 ## Support
 
 For issues, questions, or suggestions:
